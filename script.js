@@ -44,6 +44,8 @@ function initLoadingScreen() {
     }, 100);
 }
 
+// Update the initNavigation function in script.js:
+
 // Navigation
 function initNavigation() {
     const header = document.getElementById('header');
@@ -56,7 +58,7 @@ function initNavigation() {
     mobileMenuBtn.addEventListener('click', () => {
         mobileMenuBtn.classList.toggle('active');
         navMenu.classList.toggle('active');
-        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+        document.body.classList.toggle('menu-open');
     });
     
     // Close mobile menu when clicking on links
@@ -64,8 +66,26 @@ function initNavigation() {
         link.addEventListener('click', () => {
             mobileMenuBtn.classList.remove('active');
             navMenu.classList.remove('active');
-            document.body.style.overflow = '';
+            document.body.classList.remove('menu-open');
         });
+    });
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!mobileMenuBtn.contains(e.target) && !navMenu.contains(e.target)) {
+            mobileMenuBtn.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
+    
+    // Close mobile menu on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            mobileMenuBtn.classList.remove('active');
+            navMenu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
     });
     
     // Active navigation based on scroll position
@@ -112,10 +132,17 @@ function initNavigation() {
                     top: targetPosition,
                     behavior: 'smooth'
                 });
+                
+                // Close mobile menu if open
+                mobileMenuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.classList.remove('menu-open');
             }
         });
     });
 }
+    
+
 
 // Scroll Effects
 function initScrollEffects() {
